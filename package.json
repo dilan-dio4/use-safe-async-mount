@@ -1,0 +1,33 @@
+{
+    "name": "use-safe-async-mount",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "source": "src/index.tsx",
+    "repository": "git://github.com/dilan-dio4/use-safe-async-mount.git",
+    "scripts": {
+        "build": "tsc",
+        "prepare": "pnpm run build",
+        "dev": "vite"
+    },
+    "author": "Dilan Ozkaynak",
+    "files": [
+        "dist",
+        "LICENSE",
+        "README.md"
+    ],
+    "license": "MIT",
+    "peerDependencies": {
+        "react": ">=17.0.2"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.25",
+        "@types/react-dom": "^18.0.8",
+        "@vitejs/plugin-react": "^2.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "^4.8.4",
+        "vite": "^3.2.3",
+        "vite-tsconfig-paths": "^3.5.2"
+    }
+}
