@@ -21,7 +21,7 @@ function Example() {
         if (isActive()) {
             // ^ Avoids setting component state after unmount
             setStateThatDependsOnAsync("I'm defined!");
-            return "A value to use in cleanup"
+            return { a: "a" }
         }
     }, console.log)
 

@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState, Fragment } from 'react';
 
-interface ISafeRender {
-    children: React.ReactElement | React.ReactElement[];
+interface ISafeRender<T extends {}> {
+    children: React.ReactElement | React.ReactElement[] | ((safeState: NonNullable<T>) => React.ReactElement | React.ReactElement[]);
 }
 
-export default function useSafeAsyncMount<T = void>(effect: (isActive: () => boolean) => Promise<T>, cleanup?: (result: T) => void) {
+export default function useSafeAsyncMount<T extends {} | undefined>(effect: (isActive: () => boolean) => Promise<T>, cleanup?: (result: T) => void) {
     const isMounted = useRef<boolean>(false);
     const isSafeMounted = useRef<boolean>(false);
 
-    const [SafeRender, setSafeRender] = useState<(props: ISafeRender) => React.ReactElement>(() => () => <Fragment />);
+    const [SafeRender, setSafeRender] = useState<(props: ISafeRender<T>) => React.ReactElement>(() => () => <Fragment />);
+    const [safeState, setSafeState] = useState<T | undefined>();
     const hasCleanup = typeof cleanup === 'function';
 
     useEffect(() => {
@@ -16,11 +17,13 @@ export default function useSafeAsyncMount<T = void>(effect: (isActive: () => boo
         isMounted.current = true;
         const maybePromise = effect(() => isMounted.current);
 
-        Promise.resolve(maybePromise).then(value => {
+        Promise.resolve(maybePromise).then((value) => {
             result = value;
             isSafeMounted.current = true;
             if (isMounted.current) {
-                setSafeRender(() => (props: ISafeRender) => <Fragment>{props.children}</Fragment>);
+                setSafeRender(() => (props: ISafeRender<T>) => (
+                    <Fragment>{typeof props.children !== 'function' ? props.children : props.children(safeState)}</Fragment>
+                ));
             }
         });
 
@@ -32,11 +35,11 @@ export default function useSafeAsyncMount<T = void>(effect: (isActive: () => boo
                 cleanup(result);
             }
         };
-    }, [])
+    }, []);
 
     return {
         isMounted: isMounted.current,
         isSafeMounted: isSafeMounted.current,
-        SafeRender
-    }
+        SafeRender,
+    };
 }
