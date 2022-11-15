@@ -35,25 +35,36 @@ When a component's state depends on a value gathered from an async function, the
 ### The Traditional Pattern
 
 ```js
-useEffect(() => {
-  someAsyncFunction().then(res => setValue(res))
-  // or
-  const run = async () => {
-    const res = await someAsyncFunction()
-    setValue(res)
-  }
-  run();
-}, [])
+function Component() {
+  const [val, setVal] = useState();
+
+  useEffect(() => {
+    someAsyncFunction().then(res => setVal(res))
+    // OR
+    const run = async () => {
+      const res = await someAsyncFunction()
+      setVal(res)
+    }
+    run();
+  }, [])
+
+  return (
+    <>
+        {res && <p>{res}</p>}
+    </>
+  )
+}
 ```
 
-There's two drawbacks to this solution:
+There's three drawbacks to this solution:
 
 1. The variable is _undefined_ initial when the component mounts. This more render logic.
 2. The component may unmount during the asynchronous request. Setting a state variable on an unmounted component is a **memory leak and will throw an error**.
+3. In TypeScript projects, your compile won't recognize that your variable has been defined. That means `!`'s everywhere.
 
 ## The Solution
 
-`use-safe-async-mount` solves both of these problems by acting as a **true hook-based `componentWillMount`** implementation.
+`use-safe-async-mount` solves these problems by acting as a **true hook-based, type-safe `componentWillMount`** implementation.
 
 ```js
 import useSafeAsyncMount from 'use-safe-async-mount';
