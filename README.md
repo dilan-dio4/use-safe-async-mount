@@ -4,15 +4,9 @@
 
 <h1 align="center">
 
-use-safe-async-mount
+use-safe-async-mount<br><sub>The Asynchronous Functional Component Holder</sub>
 
 </h1>
-
-<h4 align="center">
-  <b>The Asynchronous Functional Component Holder</b>
-</h4>
-
-<hr />
 
 ## The Problem
 
