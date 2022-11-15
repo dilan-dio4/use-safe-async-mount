@@ -1,4 +1,18 @@
-# use-safe-async-mount
+<!-- markdownlint-disable MD033 MD041 -->
+
+<br />
+
+<h1 align="center">
+
+use-safe-async-mount
+
+</h1>
+
+<h4 align="center">
+  <b>The Asynchronous Functional Component Holder</b>
+</h4>
+
+<hr />
 
 ## The Problem
 
@@ -30,75 +44,88 @@ Here's some situations that **do** fit in the empty `useEffect` hook:
 
 ## Async State
 
-When a component's state depends on a value gathered from an async function, the common solution is to manually invoke it directly from the empty `useEffect` hook: 
+When a component's state depends on a value gathered from an async function, the common solution is to manually invoke it directly from the empty `useEffect` hook:
 
 ### The Traditional Pattern
 
 ```js
-function Component() {
-  const [val, setVal] = useState();
+function ExampleComponent() {
+  const [stateOne, setStateOne] = useState()
 
   useEffect(() => {
-    someAsyncFunction().then(res => setVal(res))
+    someAsyncFunction().then(res => setStateOne(res))
     // OR
     const run = async () => {
       const res = await someAsyncFunction()
-      setVal(res)
+      setStateOne(res)
     }
     run();
   }, [])
 
   return (
     <>
-        {res && <p>{res}</p>}
+        <h1>My Example Component</h1>
+        {stateOne && <p>{stateOne}</p>}
     </>
   )
 }
 ```
 
-There's three drawbacks to this solution:
+## The Drawbacks
 
-1. The variable is _undefined_ initial when the component mounts. This more render logic.
+There's three negative implications to this solution:
+
+1. When the component initially mounts, the variable is _undefined_. This requires more render logic.
 2. The component may unmount during the asynchronous request. Setting a state variable on an unmounted component is a **memory leak and will throw an error**.
-3. In TypeScript projects, your compile won't recognize that your variable has been defined. That means `!`'s everywhere.
+3. In TypeScript projects, your compiler won't recognize that your variable has been defined. That means `!`'s everywhere.
 
 ## The Solution
 
+### Installation
+
+```bash
+npm i use-safe-async-mount
+```
+
 `use-safe-async-mount` solves these problems by acting as a **true hook-based, type-safe `componentWillMount`** implementation.
+
+### Example
 
 ```js
 import useSafeAsyncMount from 'use-safe-async-mount';
 
-function Example() {
-    const [val, setVal] = useState();
+function ExampleComponent() {
 
-    const { 
-        SafeRender, // Component to wrap variable-dependent state
-        isMounted, 
-        isSafeMounted 
-    } = useSafeAsyncMount(async isActive => {
-        const res = await someAsyncFunction();
-        if (isActive()) {
-            // ^ Avoids setting component state after unmount
-            setStateThatDependsOnAsync(res);
-            return "Some value to use in cleanup function"
-        }
-    })
+  const { SafeRender } = useSafeAsyncMount(async isActive => {
+    const res = await someAsyncFunction()
+    if (isActive()) {
+      // ^ This avoids setting component state after unmount
+      
+      // These values are defined and type-safe in the `SafeRender` component
+      return { 
+        stateOne: "Some value my component depends on",
+        stateTwo: res
+      }
+    }
+  })
 
-    return (
-        <>
-            <h1>{componentStateStr}</h1>
-            <SafeRender>
-                <h2>I can be sure that the state variable <code>stateThatDependsOnAsync</code> is defined!</h2>
-                <code>stateThatDependsOnAsync:&nbsp;"{stateThatDependsOnAsync}"</code>
-            </SafeRender>
-        </>
-    )
+  return (
+    <>
+      <h1>My Example Component</h1>
+      <SafeRender>
+        {({ stateOne, stateTwo }) => (
+          <p>{stateOne}</p>
+        )}
+      </SafeRender>
+    </>
+  )
 }
 ```
 
-Here's an [interactive example]() and the [associated source code]()
+## Example
 
-## Inspiration
+Here's an [interactive example]() and the [associated source code](/test/src/App.tsx).
+
+## Inspirations
 
 * [use-async-effect](https://github.com/rauldeheer/use-async-effect)

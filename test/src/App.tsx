@@ -3,10 +3,11 @@ import useSafeAsyncMount from '../../src';
 
 
 export default function App() {
-    const [isShowingChild, setIsShowingChild] = useState<boolean>(true);
+    const [isShowingChild, setIsShowingChild] = useState<boolean>(true)
     return (
         <div>
             <button onClick={() => setIsShowingChild(prev => !prev)}>{isShowingChild ? "Hide" : "Show"} Child</button>
+            <small>&nbsp;&nbsp;&nbsp;(The optional cleanup function's output is available in console)</small>
             {isShowingChild && <Example />}
         </div>
     )
@@ -20,7 +21,7 @@ function Example() {
         if (isActive()) {
             // ^ This avoids setting component state after unmount
 
-            // Values defined and are type-safe in the `SafeRender` component
+            // These values are defined and type-safe in the `SafeRender` component
             return { 
                 stateOne: "Some value my component depends on",
                 stateTwo: Math.random()
@@ -42,8 +43,10 @@ function Example() {
             <SafeRender>
                 {({ stateOne, stateTwo }) => (
                     <>
-                        <h2>I can be sure that the the variables "<em>stateOne</em>" and "<em>stateOne</em>" are defined and type-safe!</h2>
+                        <h2>I can be sure that the the variables "<em>stateOne</em>" and "<em>stateTwo</em>" are defined and type-safe!</h2>
+                        <br />
                         <code>stateOne:&nbsp;"{stateOne}"</code>
+                        <br />
                         <code>stateTwo:&nbsp;"{stateTwo}"</code>
                     </>
                 )}
