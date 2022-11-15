@@ -8,6 +8,8 @@ use-safe-async-mount<br><sub>The Asynchronous Functional Component Holder</sub>
 
 </h1>
 
+<br />
+
 ## The Problem
 
 This is a `useEffect` hook with zero dependencies:
