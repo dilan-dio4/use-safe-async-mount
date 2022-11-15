@@ -1,6 +1,6 @@
 {
     "name": "use-safe-async-mount",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
     "main": "dist/index.js",
     "source": "src/index.tsx",
@@ -10,7 +10,8 @@
         "prepare": "pnpm run build",
         "dev": "vite",
         "build-test": "vite build",
-        "prettier-format": "prettier --config prettier.config.js 'src/**/*{.ts,.tsx,.js,.jsx}' --write"
+        "prettier-format": "prettier --config prettier.config.js 'src/**/*{.ts,.tsx,.js,.jsx}' --write",
+        "pub": "npm version --no-commit-hooks --no-git-tag-version patch && pnpm run build && git add . && git commit -m \"version bump\" && git push && npm publish"
     },
     "author": "Dilan Ozkaynak",
     "files": [

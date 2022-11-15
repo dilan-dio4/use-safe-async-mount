@@ -4,7 +4,7 @@
 
 <h1 align="center">
 
-use-safe-async-mount<br><sub>The Asynchronous Functional Component Holder</sub>
+use-safe-async-mount<br><sub>The Asynchronous Functional Component Mounter</sub>
 
 </h1>
 
