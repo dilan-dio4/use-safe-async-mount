@@ -120,7 +120,7 @@ function ExampleComponent() {
 
 ## Example
 
-Here's an [interactive example]() and the [associated source code](/test/src/App.tsx).
+Here's an [interactive example](https://dilan-dio4.github.io/use-safe-async-mount/test/) and the [associated source code](/test/src/App.tsx).
 
 ## Inspirations
 

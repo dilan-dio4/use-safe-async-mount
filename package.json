@@ -9,6 +9,7 @@
         "build": "tsc",
         "prepare": "pnpm run build",
         "dev": "vite",
+        "build-test": "vite build",
         "prettier-format": "prettier --config prettier.config.js 'src/**/*{.ts,.tsx,.js,.jsx}' --write"
     },
     "author": "Dilan Ozkaynak",

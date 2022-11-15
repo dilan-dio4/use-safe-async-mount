@@ -10,15 +10,11 @@ export default defineConfig({
             input: {
                 app: "./test/index.html"
             },
-            external: ['react'],
-            output: {
-                globals: {
-                    react: 'react'
-                }
-            }
-        }
+        },
+        outDir: "test/dist"
     },
     server: {
         open: "/test/"
-    }
+    },
+    base: "/use-safe-async-mount/"
 })
